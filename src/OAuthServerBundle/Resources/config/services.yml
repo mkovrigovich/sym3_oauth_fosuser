@@ -1,0 +1,44 @@
+#parameters:
+#    platform.entity.user.class: OAuthServerBundle\Entity\User
+#    platform.user.provider.class: OAuthServerBundle\Provider\UserProvider
+#
+services:
+    app_oauth_server.authorize.form_type:
+        class: OAuthServerBundle\Form\Type\AuthorizeFormType
+
+    app_oauth_server.authorize.form:
+        class: Symfony\Component\Form\Form
+        factory-method: createNamed
+        factory-service: form.factory
+        arguments:
+          - '@app_oauth_server.authorize.form_type'
+          - 'app_oauth_server_auth'
+
+    app_oauth_server.authorize.form_handler:
+        class: OAuthServerBundle\Form\Handler\AuthorizeFormHandler
+        scope: request
+        arguments:
+          - '@app_oauth_server.authorize.form'
+          - '@request_stack'
+          - '@security.token_storage'
+          - '@fos_oauth_server.server'
+
+#    platform.user.manager:
+#        class: Doctrine\ORM\EntityManager
+#        factory-service: doctrine
+#        factory-method: getManagerForClass
+#        arguments:
+#            - '%platform.entity.user.class%'
+#
+#    platform.user.repository:
+#        class: OAuthServerBundle\Repository\UserRepository
+#        factory-service: platform.user.manager
+#        factory-method: getRepository
+#        arguments:
+#            - '%platform.entity.user.class%'
+#
+#    platform.user.provider:
+#        class: '%platform.user.provider.class%'
+#        arguments:
+#            - '@platform.user.repository'
+

@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="form">
+        <form class="vertical" action="{{ path('fos_oauth_server_authorize', {
+            'client_id': app.request.client_id,
+            'response_type': app.request.response_type,
+            'redirect_uri': app.request.redirect_uri,
+            'state': app.request.state,
+            'scope': app.request.scope
+        }) }}" method="POST">
+            <div class="form_title">
+                Grant access to {{ client.getName|escape }}?
+            </div>
+            {{ form }}
+            <div class="form_button">
+                <input type="submit" value="Authorize" />
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
